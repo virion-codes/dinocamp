@@ -5,6 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Check, Pencil, X } from "lucide-react";
 import type { User } from "@/lib/api";
 
+const DINO_EMOJIS = ["🦕", "🦖", "🦴", "🌋"];
+
+function dinoEmojiForUser(id: number) {
+  return DINO_EMOJIS[(id - 1) % DINO_EMOJIS.length];
+}
+
 interface UserCardProps {
   user: User;
   onSave: (data: { name?: string; email?: string }) => void;
@@ -33,7 +39,9 @@ const UserCard = ({ user, onSave }: UserCardProps) => {
     <Card className="relative overflow-hidden transition-shadow hover:shadow-lg">
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
-          <span className="text-4xl">👤</span>
+          <span className="text-4xl" title="Dino camper">
+            {dinoEmojiForUser(user.id)}
+          </span>
           <div className="flex-1 min-w-0">
             {editing ? (
               <div className="space-y-2">

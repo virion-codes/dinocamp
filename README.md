@@ -1,73 +1,83 @@
-# Welcome to your Lovable project
+# Dino Camp Roster
 
-## Project info
+Full-stack app: React frontend (Vite + TypeScript) and Express backend with a PostgreSQL database. View and edit users from the DB in the browser.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Project structure
 
-## How can I edit this code?
+- **`frontend/`** — React app (Vite, TypeScript, shadcn/ui, Tailwind)
+- **`backend/`** — Express API and Postgres connection
+- **`database/`** — SQL scripts: `schema.sql` (users table), `seed.sql` (sample data)
 
-There are several ways of editing your application.
+## Prerequisites
 
-**Use Lovable**
+- Node.js & npm
+- PostgreSQL (local or remote)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## Setup
 
-Changes made via Lovable will be committed automatically to this repo.
+### 1. Database
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Create the database and run the scripts:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+psql -U postgres -c "CREATE DATABASE dinocamp;"
+psql -U postgres -d dinocamp -f database/schema.sql
+psql -U postgres -d dinocamp -f database/seed.sql
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 2. Backend env
 
-# Step 3: Install the necessary dependencies.
-npm i
+Copy or edit `backend/.env` with your Postgres settings:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```env
+PGHOST=localhost
+PGPORT=5432
+PGUSER=postgres
+PGPASSWORD=your_password
+PGDATABASE=dinocamp
+```
+
+### 3. Install and run
+
+From the project root:
+
+```sh
+# Install frontend and backend dependencies
+npm install --prefix frontend
+npm install --prefix backend
+
+# Start backend (port 3000)
+npm run dev:backend
+
+# In another terminal: start frontend (http://localhost:8080)
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Or run each app from its folder:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```sh
+cd backend && npm install && npm run dev
+cd frontend && npm install && npm run dev
+```
 
-**Use GitHub Codespaces**
+## Scripts (from root)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+| Script          | Description                    |
+|-----------------|--------------------------------|
+| `npm run dev`   | Start frontend on port 8080    |
+| `npm run dev:frontend` | Same as `dev`           |
+| `npm run dev:backend` | Start Express API on port 3000 |
+| `npm run build` | Build frontend for production  |
 
-## What technologies are used for this project?
+## API (backend)
 
-This project is built with:
+- `GET /api/health` — Health check
+- `GET /api/users` — List all users
+- `GET /api/users/:id` — Get one user
+- `PUT /api/users/:id` — Update user (body: `{ "name": "...", "email": "..." }`)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Tech stack
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- **Frontend:** Vite, React, TypeScript, TanStack Query, shadcn/ui, Tailwind CSS
+- **Backend:** Express, Node.js (ES modules)
+- **Database:** PostgreSQL (`pg`)
